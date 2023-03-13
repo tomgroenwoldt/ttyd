@@ -244,7 +244,11 @@ export class Xterm {
         console.log('[ttyd] websocket connection opened');
 
         const { textEncoder, terminal, overlayAddon } = this;
-        const msg = JSON.stringify({ AuthToken: this.token, columns: terminal.cols, rows: terminal.rows });
+        const msg = JSON.stringify({
+            AuthToken: this.token,
+            columns: terminal.cols,
+            rows: terminal.rows,
+        });
         this.socket?.send(textEncoder.encode(msg));
 
         if (this.opened) {
@@ -416,7 +420,8 @@ export class Xterm {
         };
         const enableWebglRenderer = () => {
             if (this.webglAddon) return;
-            this.webglAddon = new WebglAddon();
+            console.log('Preserving buffer...');
+            this.webglAddon = new WebglAddon(true);
             disposeCanvasRenderer();
             try {
                 this.webglAddon.onContextLoss(() => {
